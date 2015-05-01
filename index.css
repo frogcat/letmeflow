@@ -132,3 +132,4 @@ div.river0:before {
 }
 
 @-webkit-keyframes anime1 { 0% {stroke-dashoffset: 10;}100%{stroke-dashoffset: 0;}}
+@keyframes anime1 { 0% {stroke-dashoffset: 10;}100%{stroke-dashoffset: 0;}}
