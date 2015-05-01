@@ -1,0 +1,107 @@
+
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Stream</title>
+<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0" />
+<link rel="stylesheet"
+	href="//cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="//cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+
+<link rel="stylesheet" href="index.css" />
+</head>
+<body>
+	<div id="map">
+		<ul id="attribution">
+			<li><a
+				href="http://maps.gsi.go.jp/development/ichiran.html#relief">色別標高図</a>
+				海域部は海上保安庁海洋情報部の資料を使用して作成</li>
+			<li><a
+				href="http://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-W05.html">国土数値情報
+					河川データ</a>神奈川県</li>
+		</ul>
+	</div>
+
+	<script>
+		var map = L.map("map", {
+			zoom : 14,
+			center : [ 35.527197, 139.246216 ]
+		});
+		L.tileLayer(
+				"http://cyberjapandata.gsi.go.jp/xyz/relief/{z}/{x}/{y}.png", {
+					minZoom : 5,
+					maxZoom : 15
+				}).addTo(map)
+
+		$("#attribution").each(function() {
+			$(this).find("li").each(function() {
+				map.attributionControl.addAttribution($(this).html());
+			}).remove();
+		});
+
+		$.get("W05-08_14-g.xml", function(doc) {
+
+			var hash = {};
+			var data = [];
+			(function(e) {
+				if (e.hasAttribute("gml:id"))
+					hash["#" + e.getAttribute("gml:id")] = e;
+				if (e.localName == "Stream")
+					data.push(e);
+				for (var f = e.firstChild; f != null; f = f.nextSibling)
+					if (f.nodeType == 1)
+						arguments.callee(f);
+			})(doc.documentElement);
+
+			data.forEach(function(root) {
+				var points = null;
+				var name = null;
+				var type = null;
+				var h1 = NaN;
+				var h2 = NaN;
+				(function(e, path) {
+					var fn = arguments.callee;
+					if (e.localName == "posList")
+						points = e.textContent;
+					else if (e.localName == "riverName")
+						name = e.textContent;
+					else if (e.localName == "sectionType")
+						type = e.textContent;
+					var children = [];
+					for (var f = e.firstChild; f != null; f = f.nextSibling)
+						if (f.nodeType == 1)
+							children.push(f);
+					if (e.hasAttribute("xlink:href"))
+						children.push(hash[e.getAttribute("xlink:href")]);
+					children.forEach(function(child) {
+						path.push(child.localName);
+						fn(child, path);
+						path.pop();
+					});
+				})(root, [ root.localName ]);
+
+				var clazz = "river river" + type;
+
+				var ll = [];
+				points.split("\n").forEach(function(row) {
+					var col = row.split(" ");
+					if (col.length == 2) {
+						var lat = parseFloat(col[0]);
+						var lon = parseFloat(col[1]);
+						ll.push(L.latLng(lat, lon));
+					}
+				});
+
+				L.polyline(ll, {
+					className : clazz
+				}).addTo(map).bindPopup(
+						"<div class='"+clazz+"'>" + name + "</div>");
+			});
+
+		});
+	</script>
+</body>
+</html>
+

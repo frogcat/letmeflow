@@ -1,0 +1,134 @@
+@charset "UTF-8";
+
+body {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
+#map {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+path.river {
+	stroke-opacity: 0.9;
+	fill: none;
+	-webkit-animation: anime1 1s linear 0s infinite normal;
+	animation: anime1 2s linear 0s infinite normal;
+	pointer-events: stroke;
+	stroke: #fff;
+}
+
+path.river1 {
+	stroke-dasharray: 0.1, 9.9;
+	stroke-width: 12;
+}
+
+path.river2 {
+	stroke-dasharray: 0.1, 9.9;
+	stroke-width: 9;
+}
+
+path.river3 {
+	stroke-dasharray: 0.1, 9.9;
+	stroke-width: 6;
+}
+
+path.river4 {
+	stroke-dasharray: 0.1, 9.9;
+	stroke-width: 3;
+}
+
+path.river5 {
+	stroke-dasharray: 0.1, 9.9;
+	stroke-width: 12;
+}
+
+path.river6 {
+	stroke-dasharray: 0.1, 9.9;
+	stroke-width: 9;
+}
+
+path.river7 {
+	stroke-dasharray: 0.1, 9.9;
+	stroke-width: 6;
+}
+
+path.river8 {
+	stroke-dasharray: 0.1, 9.9;
+	stroke-width: 3;
+}
+
+path.river0 {
+	stroke-dasharray: 0.1, 9.9;
+	stroke-width: 8;
+}
+
+div.river1:before {
+	content: '1級直轄区間';
+	display: block;
+	font-size: 75%;
+	font-weight: bold;
+}
+
+div.river2:before {
+	content: '1級指定区間';
+	display: block;
+	font-size: 75%;
+	font-weight: bold;
+}
+
+div.river3:before {
+	content: '2級河川区間';
+	display: block;
+	font-size: 75%;
+	font-weight: bold;
+}
+
+div.river4:before {
+	content: '指定区間外';
+	display: block;
+	font-size: 75%;
+	font-weight: bold;
+}
+
+div.river5:before {
+	content: '1級直轄区間でかつ湖沼区間を兼ねる場合';
+	display: block;
+	font-size: 75%;
+	font-weight: bold;
+}
+
+div.river6:before {
+	content: '1級指定区間でかつ湖沼区間を兼ねる場合';
+	display: block;
+	font-size: 75%;
+	font-weight: bold;
+}
+
+div.river7:before {
+	content: '2級河川区間でかつ湖沼区間を兼ねる場合';
+	display: block;
+	font-size: 75%;
+	font-weight: bold;
+}
+
+div.river8:before {
+	content: '指定区間外でかつ湖沼区間を兼ねる場合';
+	display: block;
+	font-size: 75%;
+	font-weight: bold;
+}
+
+div.river0:before {
+	content: '不明';
+	display: block;
+	font-size: 75%;
+	font-weight: bold;
+}
+
+@-webkit-keyframes anime1 { 0% {stroke-dashoffset: 10;}100%{stroke-dashoffset: 0;}}
